@@ -1,3 +1,13 @@
+<section class="main_container">
+    <section class="event_bar">
+        <ul style="list-style: none;">
+            <li (click)="log(event)" *ngFor="let event of data">{{event.title}}</li>
+        </ul>
+    </section>
+    <section class="map_container">
+        <div class="map" id="map"></div>
+    </section>
+</section>
 
-<div class="map" id="map" class="match-parent"></div>
+
 
