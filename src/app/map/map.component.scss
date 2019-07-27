@@ -5,16 +5,20 @@
   width: 100%;
   .event_bar {
     height: 100%;
-    display: flex;
-    justify-content: center;
-    display: flex;
-    flex-direction: column;
   }
   .map_container {
     height: 100%;
     width: 100%;
   }
 
+}
+
+.event_list {
+  list-style: none;
+}
+
+.event_list > li {
+  padding-bottom: 1em;
 }
 
 .map {

@@ -1,7 +1,7 @@
 <section class="main_container">
     <section class="event_bar">
-        <ul style="list-style: none;">
-            <li (click)="log(event)" *ngFor="let event of data">{{event.title}}</li>
+        <ul class="event_list">
+            <li (click)="goToEvent(event)" *ngFor="let event of data">{{event.title}}</li>
         </ul>
     </section>
     <section class="map_container">
