@@ -1,4 +1,23 @@
+@import "~mapbox-gl/dist/mapbox-gl.css";
+@import "~@mapbox/mapbox-gl-geocoder/lib/mapbox-gl-geocoder.css";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 /* You can add global styles to this file, and also import other style files */
-html, body {
+html,body {
   height: 100%;
+  padding: 0;
+  margin: 0;
 }
+
+// custom styles for the popup are here 
+div.mapboxgl-popup-content {
+ color: black;
+}
+
+
+div.mapboxgl-popup-content > .readmore {
+  height: 30vh;
+  width: 30vw;
+  background: green
+}
+

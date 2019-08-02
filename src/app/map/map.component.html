@@ -1,13 +1,26 @@
-<section class="main_container">
-    <section class="event_bar">
-        <ul class="event_list">
-            <li (click)="goToEvent(event)" *ngFor="let event of data">{{event.title}}</li>
-        </ul>
-    </section>
-    <section class="map_container">
-        <div class="map" id="map"></div>
-    </section>
-</section>
+<mgl-map
+    [style]="'mapbox://styles/mapbox/satellite-v9'"
+    [zoom]="[3]"
+    [center]="centerPoint"
+  >
+  <mgl-marker *ngFor="let event of events"
+     [lngLat]="event.coordinates"
+   >
+   <div id={{event.eventId}} (click)="this.eventService.changeCenter(event)">
+      <i style="color: white; font-size:3em; "class="material-icons">place</i>
+   </div>
+   </mgl-marker>
 
-
+   <mgl-popup *ngIf="currentEvent"
+     [lngLat]="currentEvent.coordinates"
+     [closeOnClick]="false"
+     [className]="popup"
+   >
+   <h2>  {{currentEvent.type}}  </h2>
+   <p class="title">  {{currentEvent.title}}  </p>
+   <button (click)="readMore(currentEvent)">read more</button>
+  
+   
+  </mgl-popup>
+  </mgl-map>
 

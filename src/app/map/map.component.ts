@@ -2,12 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { MapService } from '../service/map.service';
 import { HttpClient } from '@angular/common/http';
-import * as mapboxgl from 'mapbox-gl';
-
-//  What need to be done next is 
-// Build popup on click marker >>> not just by clicking on fly to event in the event bar
-// add fly to event on click marker >>> not just controlled by the event bar
-// refactor code 
+import { EventService } from '../service/event.service';
+import { retry } from 'rxjs/operators';
+import { Map as MapboxMap } from 'mapbox-gl';
 
 @Component({
   selector: 'app-map',
@@ -15,50 +12,43 @@ import * as mapboxgl from 'mapbox-gl';
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
-  map: mapboxgl.Map;
-  style = 'mapbox://styles/mapbox/satellite-v9';
-  data: [any];
-  currentPopup;
-  event: any;
+  events: any;
+  centerPoint: any; // this sets the initial center point based off last event in time
+  readmore: Boolean; // will use this to trigger some function and click read more 
+  popup: Boolean;   // were any of the markers clicked on. If so, then create an instance of a popup with the event details
+  popupCoordinates: Number[]; // Not sure if we are using this
+  currentEvent: any;
 
-  goToEvent(event) {
-    if (this.currentPopup) {
-      this.currentPopup.remove();
-    }
-
-
-    this.map.flyTo({
-      center: event.coordinates
-    });
-    var popup = new mapboxgl.Popup({ closeOnClick: false, offset: 25 })
-      .setLngLat(event.coordinates)
-      .setHTML(`<p>${event.title}</p>`)
-      .addTo(this.map);
-    this.currentPopup = popup;
-  }
-
-  constructor(private mapService: MapService, private http: HttpClient) { }
+  constructor(private eventService: EventService) { }
 
   ngOnInit() {
-    // get all events from api then build map with markers
-    this.mapService.getEvents().subscribe((val) => {
-      // gets the coordinates from the last event >> map will use to center it
-      let [lng, lat] = val[0].coordinates;
-      (mapboxgl as any).accessToken = environment.mapbox.accessToken;
-      this.map = new mapboxgl.Map({
-        container: 'map',
-        style: this.style,
-        zoom: 4,
-        center: [lng, lat]
-      });
-      // for each event ... build a map marker
-      this.data = val;
-      this.data.forEach((event) => {
-        const [lat, lng] = event.coordinates;
-        const marker = new mapboxgl.Marker()
-          .setLngLat([lat, lng])
-          .addTo(this.map);
-      })
+    // sets the initial center
+    this.eventService.currentCenter.subscribe(event => this.centerPoint = event)
+
+    this.eventService.currentEvent.subscribe((event) => {
+      this.popup = false;
+      this.currentEvent = event;
     })
+
+    // gets all events > sets the center point to last event >> 
+    this.eventService.getEvents()
+      .subscribe((events) => {
+        this.events = events;
+        this.centerPoint = events[0].coordinates;
+        console.log(events)
+        retry(3);
+      });
+
+  }
+
+  readMore(event) {
+    this.readmore = true;
+  }
+  //  adds a popup on click or through the event bar navigation 
+  addPopup(event) {
+    this.popup = false;
+    this.currentEvent = event;
+    this.popupCoordinates = event.coordinates;
+    this.popup = true;
   }
 }

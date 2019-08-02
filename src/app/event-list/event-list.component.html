@@ -1,0 +1,56 @@
+<section class="event_bar">
+
+<h1 class="center">Event Bar</h1>
+ <!-- <ul>
+   <li *ngFor="let event of events" (click)="setCenter(event)"> 
+     <ng-template [ngIf]="event.type == 'Wildfires' ">{{event.title}}</ng-template>
+   </li>
+ </ul> -->
+ <mat-accordion>
+
+    <mat-expansion-panel>
+          <mat-expansion-panel-header>
+              <mat-panel-title>
+                WildFires
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p (click)="setCenter(event)" *ngFor="let event of events">
+              <ng-template  [ngIf]="event.type === 'Wildfires'">{{event.title}}</ng-template>
+            </p>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+              Severe Storm
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p (click)="setCenter(event)" *ngFor="let event of events">
+            <ng-template [ngIf]="event.type === 'Severe Storms'">{{event.title}}</ng-template>
+          </p>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
+      <mat-expansion-panel-header>
+          <mat-panel-title>
+            EarthQuakes
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p (click)="setCenter(event)" *ngFor="let event of events">
+          <ng-template [ngIf]="event.type === 'Earthquakes'">{{event.title}}</ng-template>
+        </p>
+</mat-expansion-panel>
+
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+          Volcanoes
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <p (click)="setCenter(event)" *ngFor="let event of events">
+        <ng-template [ngIf]="event.type === 'Volcanoes'">{{event.title}}</ng-template>
+      </p>
+</mat-expansion-panel>
+
+  </mat-accordion>
+</section>
